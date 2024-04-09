@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mui/mui-toolpad/v0.1.53/docs/schemas/v1/definitions.json#properties/Page
+
+apiVersion: v1
+kind: page
+spec:
+  title: page1
+  display: shell
+  authorization:
+    allowAll: true
+  parameters:
+    - name: template_id
+      value: "181913649"
+    - name: username
+      value: nathan3415
+    - name: password
+      value: msmhm94194
+    - name: text0
+      value: test1
+    - name: text1
+      value: test2
+  content:
+    - component: Image
+      name: image
+      props:
+        src:
+          $$jsExpression: query.data.data.url
+    - component: Text
+      name: text
+      props:
+        value:
+          $$jsExpression: String(page.parameters.template_id+page.parameters.text0+page.parameters.text1)
+    - component: Text
+      name: text1
+      props:
+        value:
+          $$jsExpression: query.data.data.url
+  queries:
+    - name: query
+      mode: query
+      query:
+        kind: rest
+        headers: []
+        method: POST
+        url: https://api.imgflip.com/caption_image
+        body:
+          kind: urlEncoded
+          content:
+            - name: template_id
+              value:
+                $$jsExpression: String(parameters.template_id)
+            - name: username
+              value: nathan3415
+            - name: password
+              value: msmhm94194
+            - name: text0
+              value:
+                $$jsExpression: String(parameters.text0)
+            - name: text1
+              value:
+                $$jsExpression: String(parameters.text1)
+      parameters:
+        - name: template_id
+          value:
+            $$jsExpression: String(page.parameters.template_id)
+        - name: username
+          value: nathan3415
+        - name: password
+          value: msmhm94194
+        - name: text0
+          value:
+            $$jsExpression: String(page.parameters.text0)
+        - name: text1
+          value:
+            $$jsExpression: String(page.parameters.text1)

@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mui/mui-toolpad/v0.1.53/docs/schemas/v1/definitions.json#properties/Page
+
+apiVersion: v1
+kind: page
+spec:
+  title: Default page
+  alias:
+    - S4jOlXV
+  queries:
+    - name: nom
+      mode: query
+      query:
+        kind: rest
+        url: https://api.imgflip.com/get_memes
+        headers: []
+        method: GET
+        transform: "return data.data.memes\r
+
+          \  .filter(meme => meme.box_count == 2)\r
+
+          \  .slice(0,10)\r
+
+          \  .map(meme => {\r
+
+          \    return {\r
+
+          \      value: meme.id,\r
+
+          \      label: meme.name,\r
+
+          \      \r
+
+          \    }\r
+
+          \  });\r\n"
+        transformEnabled: true
+    - name: query1
+      mode: query
+      query:
+        kind: rest
+        url: https://api.imgflip.com/caption_image
+        headers:
+          [
+            {
+              name: template_id,
+              value: { $$jsExpression: const select1 = String(select.value) },
+            },
+          ]
+        method: POST
+        transform: return data;
+        transformEnabled: true
+  content:
+    - component: Select
+      name: select
+      props:
+        options:
+          $$jsExpression: nom.rows
+        defaultValue: "181913649"
+    - component: TextField
+      name: textField
+      props:
+        defaultValue: test1
+    - component: TextField
+      name: textField1
+      props:
+        defaultValue: test2
+    - component: Button
+      name: button
+      props:
+        onClick:
+          $$navigationAction:
+            page: page1
+            parameters:
+              template_id:
+                $$jsExpression: select.value
+              username: nathan3415
+              password: msmhm94194
+              text0:
+                $$jsExpression: String(textField.value)
+              text1:
+                $$jsExpression: String(textField1.value)
